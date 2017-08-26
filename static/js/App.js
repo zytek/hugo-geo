@@ -108,11 +108,9 @@ $(document).ready(function() {
 		
 		var feature = svg.selectAll("path");
 
-		d3.timer(function() {
-			var dt = Date.now() - Start;
-			projection.rotate([rotate[0] + velocity[0] * dt]);
-			feature.attr("d", path);
-		});
+		var dt = Date.now()
+		projection.rotate([rotate[0] + velocity[0] * dt]);
+		feature.attr("d", path);
 		
 		function updateWindow(){
 			var w = $('#menu').outerWidth(true);
