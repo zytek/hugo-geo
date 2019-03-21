@@ -59,16 +59,17 @@ $(document).ready(function() {
 			return;
 		}
 		
-		var Start = Date.now();
-		var width = $('#menu').outerWidth(true);
-	   	var height = $('#menu').outerHeight(true);
+		var width = $('#menu').outerWidth(true) ;
+	   	var height = $('#menu').outerHeight(true) ;
 		var rotate = [10];
-	    var velocity = [0.001];
+	    var velocity = [0.002];
+
+        var bounds = Math.max(width, height) * 0.8;
 	
 		var projection = d3.geo.orthographic()
-			.scale(1000)
-			.translate([250, height])
-			.rotate([-80])
+			.scale(bounds)
+			.translate([bounds/2, bounds/2])
+            .rotate([0, -90])
 			.clipAngle(90)
 			.precision(0.1);
 	
@@ -108,16 +109,17 @@ $(document).ready(function() {
 		
 		var feature = svg.selectAll("path");
 
-		var dt = Date.now()
-		projection.rotate([rotate[0] + velocity[0] * dt]);
-		feature.attr("d", path);
-		
 		function updateWindow(){
-			var w = $('#menu').outerWidth(true);
-			var h = $('#menu').outerHeight(true);
-	
-			svg.attr("width", w).attr("height", h);
+            width = $('#menu').outerWidth(true) ;
+            height = $('#menu').outerHeight(true) ;
+            svg.attr("width", width).attr("height", height);
+            bounds = Math.max(width, height) * 0.7;
+            projection.rotate([rotate[0] + velocity[0] * Date.now(), -30])
+                .scale(bounds)
+                .translate([bounds/2, bounds/1.5])
+            feature.attr("d", path);
 		}
+        updateWindow();
 		window.onresize = updateWindow;
 	});
 });
